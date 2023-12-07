@@ -1,0 +1,113 @@
+WindowManager:
+    MainWindow:
+    ThirdWindow:
+    LastWindow:
+<MainWindow>:
+    name: "main"
+
+    BoxLayout:
+
+        orientation : "vertical"
+        Label:
+            text:''
+        Button:
+            width:"100dp"
+            height:"100dp"
+            pos_hint :{"center_x":0.5}
+            size_hint:None,None
+            text: "Select Image"
+            on_release:
+                app.root.current = root.choose()
+                #root.manager.manager_selection = root.selection
+                print(root.manager.manager_selection)
+        Label:
+            text:root.sel
+        Button:
+            width:"200dp"
+            height:"100dp"
+            pos_hint :{"center_x":0.5}
+            size_hint:None,None
+            text: "Submit"
+            on_release:
+                app.root.current = "third";
+                root.manager.my_txt = root.update(root.ip(root.selection));
+
+
+        Label:
+            text:''
+
+        Image:
+            id:my_img
+            source:''
+
+<ThirdWindow>:
+    name: "third"
+
+    BoxLayout:
+        orientation:'vertical'
+        Label:
+            text:root.manager.my_txt
+
+        Label:
+
+            pos_hint :{"center_x":0.5,"center_y":0.5}
+            text:""
+        Label:
+
+            pos_hint :{"center_x":0.5,"center_y":0.5}
+            text:""
+        Button:
+
+            text: "Result"
+            width:"100dp"
+            height:"100dp"
+            pos_hint :{"center_x":0.5,"center_y":0.5}
+            size_hint:None,None
+            on_release:
+                app.root.current = "last"
+                root.manager.transition.direction = "up"
+
+<LastWindow>:
+    on_enter:
+        root.function_1(root.manager.manager_selection,root.manager.final_image)
+        print(root.manager.final_image)
+    name:"last"
+    canvas.before:
+        Color:
+            rgba:(0.5,1,0.5,1)
+        Rectangle:
+            pos:self.pos
+            size:self.size
+
+    BoxLayout:
+        orientation:'vertical'
+        BoxLayout:
+            Image:
+                id:f__img
+                source:""
+                allow_stretch:True
+                keep_ratio:True
+
+            Image:
+                id:my__img
+                source:""
+                allow_stretch:True
+                keep_ratio:True
+
+        BoxLayout:
+            Button:
+                background_color: (1,0.1,0.2,0.8)
+                pos_hint :{"center_x":0.5,"center_y":0.5}
+                size_hint:0.2,0.2
+                text: "Home "
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "up"
+            Button:
+                background_color: (1,0.1,0.2,0.8)
+                pos_hint :{"center_x":0.5,"center_y":0.5}
+                size_hint:0.2,0.2
+                text: "Back "
+                on_release:
+                    app.root.current = "third"
+                    root.manager.transition.direction = "right"
